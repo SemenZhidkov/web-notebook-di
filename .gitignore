@@ -5,6 +5,7 @@
 !/app/
 !/current_system_state.md
 !/.gitignore
+!/index.html
 
 # Keep standard ignores for inner files (e.g. inside /app)
 .DS_Store
