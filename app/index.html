@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Интерактивный блокнот менеджера</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="shell topbar">
+        <div class="brand-panel">
+          <div class="brand-lockup">
+            <div class="brand-mark">
+              <img src="./assets/logo.jpg" alt="Логотип ДОМ.РФ" />
+            </div>
+            <div class="brand-copy">
+              <p class="eyebrow" id="brand-kicker">Интерактивный блокнот менеджера</p>
+              <h1 id="brand-title">Интерактивный блокнот менеджера</h1>
+              <p class="lead" id="brand-lead">
+                Сначала менеджер выбирает цель кредита, затем видит только
+                совместимые программы и проходит обязательный pre-check. После
+                этого интерфейс открывает узлы <strong>1-го</strong> и
+                <strong>2-го</strong> звонка с полями, документами,
+                подсказками и регуляторными сигналами.
+              </p>
+            </div>
+          </div>
+
+          <div class="brand-sequence" aria-label="Логика прохождения сценария">
+            <article class="brand-step-card">
+              <span>01 Цель</span>
+              <p>Выберите сценарий кредита: покупка, стройка, ИЖС, залог или рефинанс.</p>
+            </article>
+            <article class="brand-step-card">
+              <span>02 Программа</span>
+              <p>Блокнот покажет только совместимые программы и сразу отсечет неверные ветки.</p>
+            </article>
+            <article class="brand-step-card">
+              <span>03 Pre-check</span>
+              <p>Снимите красные границы до разговора, чтобы не вести клиента по ошибочному маршруту.</p>
+            </article>
+            <article class="brand-step-card">
+              <span>04 Звонок 1</span>
+              <p>Соберите клиента, объект, основание программы и ранние документы.</p>
+            </article>
+            <article class="brand-step-card">
+              <span>05 Звонок 2</span>
+              <p>Доведите юридику, расчеты, документы и итог контакта до операционной готовности.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="utility-panel">
+          <section class="utility-card utility-card-note">
+            <p class="utility-label">Назначение интерфейса</p>
+            <p class="utility-copy">
+              Блокнот должен остановить менеджера до начала лишних действий,
+              если сочетание цели, программы, участников или объекта не проходит
+              методологию.
+            </p>
+          </section>
+
+          <section class="utility-card utility-card-tools">
+            <p class="utility-label">Режимы помощника</p>
+            <div class="topbar-tools">
+              <label class="tool-switch">
+                <input type="checkbox" id="detail-mode" />
+                <span>Показывать, зачем собирается блок</span>
+              </label>
+              <label class="tool-switch">
+                <input type="checkbox" id="question-mode" />
+                <span>Показывать примеры вопросов клиенту</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="utility-card utility-card-manager" id="manager-profile-root"></section>
+
+          <section class="utility-card utility-card-actions">
+            <p class="utility-label">Сессия и резервная копия</p>
+            <div class="action-cluster">
+              <button class="action-button action-button-primary" id="create-call-button" type="button">
+                Новый звонок
+              </button>
+              <button class="action-button action-button-primary" id="export-session-button" type="button">
+                Экспорт сессии
+              </button>
+              <button class="action-button" id="import-session-button" type="button">
+                Импорт сессии
+              </button>
+              <button class="action-button" id="open-calendar-button" type="button">
+                Календарь
+              </button>
+            </div>
+            <p class="utility-copy">
+              Все карточки звонков сохраняются локально в браузере и остаются
+              доступны между сессиями. JSON-экспорт нужен как ручная резервная копия.
+            </p>
+          </section>
+        </div>
+      </header>
+
+      <section class="shell journal-shell" id="journal-root"></section>
+
+      <section class="shell workspace-shell hidden" id="workspace-shell">
+        <section class="workspace-topbar" id="workspace-topbar"></section>
+
+        <section class="router-grid">
+          <article class="router-card">
+            <div class="router-head">
+              <span class="router-step">01</span>
+              <h2>Цель кредита</h2>
+            </div>
+            <p class="router-copy">
+              Первая развилка графа. Именно цель задает допустимые сценарии,
+              объектную часть маршрута и набор документов, которые вообще имеет
+              смысл собирать.
+            </p>
+            <div id="purpose-picker" class="choice-group"></div>
+          </article>
+
+          <article class="router-card">
+            <div class="router-head">
+              <span class="router-step">02</span>
+              <h2>Программа</h2>
+            </div>
+            <p class="router-copy">
+              После выбора цели показываются только релевантные программы с
+              понятным статусом: допускается, требует подтверждения или
+              блокируется до звонка.
+            </p>
+            <div id="program-picker" class="program-grid"></div>
+          </article>
+        </section>
+
+        <section class="workspace">
+          <div class="graph-column">
+            <section class="summary-card" id="route-summary"></section>
+            <section id="precheck-root" class="precheck-root"></section>
+            <section id="graph-root" class="graph-root"></section>
+            <section id="call-outcome-root" class="call-outcome-root"></section>
+          </div>
+
+          <aside class="insight-column">
+            <section class="contradiction-card" id="contradictions-root"></section>
+
+            <section class="insight-card">
+              <h2>Динамические сигналы</h2>
+              <p class="insight-copy">
+                Здесь показываются стоп-факторы, предупреждения и методологические
+                подсказки по текущей ветке.
+              </p>
+              <div id="insights-root" class="insights-root"></div>
+            </section>
+          </aside>
+        </section>
+      </section>
+
+      <section class="output-panel-root hidden" id="output-panel-root"></section>
+      <section class="documents-drawer-root hidden" id="documents-drawer-root"></section>
+      <section class="calendar-drawer-root hidden" id="calendar-drawer-root"></section>
+      <input type="file" id="session-import-input" accept=".json,application/json" hidden />
+      <section class="session-modal-root hidden" id="session-modal-root"></section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

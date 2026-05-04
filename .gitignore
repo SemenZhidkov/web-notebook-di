@@ -1,0 +1,17 @@
+# Ignore everything by default
+/*
+
+# Whitelist required directories and files
+!/app/
+!/current_system_state.md
+!/.gitignore
+
+# Keep standard ignores for inner files (e.g. inside /app)
+.DS_Store
+*.DS_Store
+*.log
+node_modules/
+dist/
+build/
+coverage/
+*.tmp
